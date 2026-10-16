@@ -1,3 +1,4 @@
+
 package com.leonardo.controlefinanceiro.controller;
 
 import com.leonardo.controlefinanceiro.model.Usuario;
@@ -19,7 +20,8 @@ public class UsuarioController {
     }
 
     @PostMapping("/cadastro")
-    public String cadastrarUsuario(@ModelAttribute Usuario usuario, Model model) {
+    public String cadastrarUsuario(@ModelAttribute Usuario usuario,
+                                   Model model) {
 
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
             model.addAttribute("erro", "Este e-mail já está cadastrado.");
@@ -27,7 +29,6 @@ public class UsuarioController {
         }
 
         usuarioRepository.save(usuario);
-
         return "redirect:/login";
     }
 
@@ -41,14 +42,31 @@ public class UsuarioController {
                              @RequestParam String senha,
                              Model model) {
 
-        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
+        Usuario usuario = usuarioRepository
+                .findByEmail(email)
+                .orElse(null);
 
         if (usuario != null && usuario.getSenha().equals(senha)) {
-            model.addAttribute("usuario", usuario);
-            return "inicio";
+            return "redirect:/inicio?email=" + 
+                    java.net.URLEncoder.encode(
+                            usuario.getEmail(),
+                            java.nio.charset.StandardCharsets.UTF_8);
         }
 
         model.addAttribute("erro", "E-mail ou senha inválidos.");
         return "login";
+    }
+
+    @GetMapping("/inicio")
+    public String inicio(@RequestParam String email, Model model) {
+
+        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
+
+        if (usuario == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("usuario", usuario);
+        return "inicio";
     }
 }
