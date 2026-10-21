@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Categoria</title>
+</head>
+<body>
+
+    <h1>Editar Categoria</h1>
+
+    <form th:action="@{/categorias/atualizar}"
+          th:object="${categoria}" method="post">
+
+        <input type="hidden" th:field="*{id}">
+
+        <label>Nome:</label>
+        <input type="text" th:field="*{nome}" required>
+
+        <label>Tipo:</label>
+        <select th:field="*{tipo}" required>
+            <option value="RECEITA">Receita</option>
+            <option value="DESPESA">Despesa</option>
+        </select>
+
+        <button type="submit">Salvar alterações</button>
+    </form>
+
+    <p><a th:href="@{/categorias}">Cancelar</a></p>
+
+</body>
+</html>

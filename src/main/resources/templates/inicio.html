@@ -1,33 +1,279 @@
+
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Controle Financeiro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Controle Financeiro</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fa;
+            color: #1c2938;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* MENU LATERAL */
+        .sidebar {
+            width: 250px;
+            background: #10253e;
+            color: white;
+            padding: 30px 20px;
+        }
+
+        .logo {
+            color: #35d399;
+            font-size: 23px;
+            font-weight: bold;
+            margin-bottom: 45px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #c9d5e3;
+            text-decoration: none;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.ativo {
+            background: #1b3b55;
+            color: #35d399;
+        }
+
+        /* CONTEÚDO */
+        .conteudo {
+            flex: 1;
+            min-width: 0;
+            padding: 35px;
+        }
+
+        .topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .topo h1 {
+            margin: 0 0 8px;
+            color: #10253e;
+        }
+
+        .topo p {
+            color: #738194;
+            margin: 0;
+        }
+
+        .usuario {
+            background: white;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        /* CARDS */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+            border-left: 5px solid #10253e;
+        }
+
+        .card h3 {
+            color: #738194;
+            font-size: 15px;
+            margin: 0 0 18px;
+        }
+
+        .card .valor {
+            font-size: 27px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .receitas {
+            border-left-color: #19b77a;
+        }
+
+        .receitas .valor {
+            color: #159b68;
+        }
+
+        .despesas {
+            border-left-color: #e65b65;
+        }
+
+        .despesas .valor {
+            color: #d94853;
+        }
+
+        .saldo {
+            border-left-color: #2878c8;
+        }
+
+        .saldo .valor {
+            color: #10253e;
+        }
+
+        /* PAINEL INFERIOR */
+        .painel {
+            background: white;
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 14px;
+        }
+
+        .painel h2 {
+            margin-top: 0;
+            color: #10253e;
+        }
+
+        .atalhos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .botao {
+            display: inline-block;
+            background: #19b77a;
+            color: white;
+            padding: 13px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .botao:hover {
+            background: #129466;
+        }
+
+        @media (max-width: 850px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .logo {
+                margin-bottom: 15px;
+            }
+
+            .conteudo {
+                padding: 20px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .topo {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Controle Financeiro</h1>
+<div class="layout">
 
-    <h2>Bem-vindo!</h2>
+    <!-- MENU LATERAL -->
+    <aside class="sidebar">
+        <div class="logo">💰 Financeiro</div>
 
-    <p>Login realizado com sucesso.</p>
+        <nav>
+            <a th:href="@{/inicio(email=${usuario.email})}" class="ativo">🏠 Início</a>
+            <a th:href="@{/receitas}">💵 Receitas</a>
+            <a th:href="@{/despesas}">💸 Despesas</a>
+            <a th:href="@{/categorias}">📁 Categorias</a>
+            <a href="#">🎯 Metas</a>
+            <a href="#">📊 Gráficos</a>
+            <a th:href="@{/login}">🚪 Sair</a>
+        </nav>
+    </aside>
 
-    <p>
-        Usuário:
-        <span th:text="${usuario.nome}"></span>
-    </p>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="conteudo">
 
-    <hr>
+        <header class="topo">
+            <div>
+                <h1>Dashboard Financeiro</h1>
+                <p>Acompanhe suas finanças em um só lugar.</p>
+            </div>
 
-    <h3>Menu</h3>
+            <div class="usuario">
+                👤 <span th:text="${usuario.nome}">Usuário</span>
+            </div>
+        </header>
 
-<ul>
-    <li><a href="/receitas">Receitas</a></li>
-    <li>Despesas</li>
-    <li>Categorias</li>
-    <li>Metas</li>
-    <li>Gráficos</li>
-</ul>
+        <h2>Resumo Financeiro</h2>
+
+        <section class="cards">
+
+            <div class="card receitas">
+                <h3>Total de Receitas</h3>
+                <div class="valor">
+                    R$ <span th:text="${#numbers.formatDecimal(totalReceitas, 1, 'POINT', 2, 'COMMA')}">0,00</span>
+                </div>
+            </div>
+
+            <div class="card despesas">
+                <h3>Total de Despesas</h3>
+                <div class="valor">
+                    R$ <span th:text="${#numbers.formatDecimal(totalDespesas, 1, 'POINT', 2, 'COMMA')}">0,00</span>
+                </div>
+            </div>
+
+            <div class="card saldo">
+                <h3>Saldo Disponível</h3>
+                <div class="valor">
+                    R$ <span th:text="${#numbers.formatDecimal(saldo, 1, 'POINT', 2, 'COMMA')}">0,00</span>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="painel">
+            <h2>Acesso Rápido</h2>
+            <p>Gerencie suas movimentações financeiras.</p>
+
+            <div class="atalhos">
+                <a th:href="@{/receitas}" class="botao">+ Receitas</a>
+                <a th:href="@{/despesas}" class="botao">+ Despesas</a>
+                <a th:href="@{/categorias}" class="botao">Categorias</a>
+            </div>
+        </section>
+
+    </main>
+
+</div>
 
 </body>
 </html>

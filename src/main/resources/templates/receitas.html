@@ -1,89 +1,356 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
-    <title>Receitas - Controle Financeiro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receitas | Controle Financeiro</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fa;
+            color: #1c2938;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* MENU LATERAL */
+        .sidebar {
+            width: 250px;
+            background: #10253e;
+            color: white;
+            padding: 30px 20px;
+        }
+
+        .logo {
+            color: #35d399;
+            font-size: 23px;
+            font-weight: bold;
+            margin-bottom: 45px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #c9d5e3;
+            text-decoration: none;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.ativo {
+            background: #1b3b55;
+            color: #35d399;
+        }
+
+        /* CONTEÚDO */
+        .conteudo {
+            flex: 1;
+            min-width: 0;
+            padding: 35px;
+        }
+
+        .topo {
+            margin-bottom: 30px;
+        }
+
+        .topo h1 {
+            color: #10253e;
+            margin-bottom: 8px;
+        }
+
+        .topo p {
+            color: #738194;
+        }
+
+        /* PAINÉIS */
+        .painel {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+        }
+
+        .painel h2 {
+            margin-top: 0;
+            color: #10253e;
+        }
+
+        /* FORMULÁRIO */
+        .formulario {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+            align-items: end;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #35485b;
+        }
+
+        input {
+            padding: 12px;
+            border: 1px solid #d8e0e8;
+            border-radius: 8px;
+            font-size: 15px;
+            width: 100%;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #19b77a;
+        }
+
+        .botao {
+            display: inline-block;
+            background: #19b77a;
+            color: white;
+            padding: 13px 20px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .botao:hover {
+            background: #129466;
+        }
+
+        /* TABELA */
+        .tabela-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #edf0f4;
+        }
+
+        th {
+            background: #f5f8fb;
+            color: #526579;
+        }
+
+        .valor {
+            color: #159b68;
+            font-weight: bold;
+        }
+
+        .acoes {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .editar {
+            color: #2878c8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .excluir {
+            color: #d94853;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .vazio {
+            text-align: center;
+            color: #738194;
+        }
+
+        @media (max-width: 850px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .logo {
+                margin-bottom: 15px;
+            }
+
+            .conteudo {
+                padding: 20px;
+            }
+
+            .formulario {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>Controle Financeiro</h1>
+<div class="layout">
 
-    <h2>Cadastro de Receitas</h2>
+    <!-- MENU LATERAL -->
+    <aside class="sidebar">
 
-    <form th:action="@{/receitas/salvar}" th:object="${receita}" method="post">
+        <div class="logo">💰 Financeiro</div>
 
-        <label>Descrição:</label>
-        <input type="text" th:field="*{descricao}" required>
+        <nav>
+            <a th:href="@{/login}">🏠 Início</a>
+            <a th:href="@{/receitas}" class="ativo">💵 Receitas</a>
+            <a th:href="@{/despesas}">💸 Despesas</a>
+            <a th:href="@{/categorias}">📁 Categorias</a>
+            <a href="#">🎯 Metas</a>
+            <a href="#">📊 Gráficos</a>
+            <a th:href="@{/login}">🚪 Sair</a>
+        </nav>
 
-        <br><br>
+    </aside>
 
-        <label>Valor:</label>
-        <input type="number" step="0.01" th:field="*{valor}" required>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="conteudo">
 
-        <br><br>
+        <header class="topo">
+            <h1>Gerenciar Receitas</h1>
+            <p>Cadastre e acompanhe todas as suas entradas financeiras.</p>
+        </header>
 
-        <label>Data:</label>
-        <input type="date" th:field="*{data}" required>
+        <!-- FORMULÁRIO -->
+        <section class="painel">
 
-        <br><br>
+            <h2>Nova Receita</h2>
 
-        <button type="submit">Cadastrar Receita</button>
+            <form th:action="@{/receitas/salvar}"
+                  th:object="${receita}"
+                  method="post"
+                  class="formulario">
 
-    </form>
+                <div class="campo">
+                    <label for="descricao">Descrição</label>
+                    <input type="text"
+                           id="descricao"
+                           th:field="*{descricao}"
+                           placeholder="Ex.: Salário"
+                           required>
+                </div>
 
-    <hr>
+                <div class="campo">
+                    <label for="valor">Valor (R$)</label>
+                    <input type="number"
+                           id="valor"
+                           step="0.01"
+                           min="0.01"
+                           th:field="*{valor}"
+                           placeholder="0,00"
+                           required>
+                </div>
 
-    <h2>Receitas cadastradas</h2>
+                <div class="campo">
+                    <label for="data">Data</label>
+                    <input type="date"
+                           id="data"
+                           th:field="*{data}"
+                           required>
+                </div>
 
-    <table border="1">
+                <div>
+                    <button type="submit" class="botao">
+                        + Cadastrar Receita
+                    </button>
+                </div>
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Descrição</th>
-                <th>Valor</th>
-                <th>Data</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
+            </form>
 
-        <tbody>
+        </section>
 
-            <tr th:each="r : ${receitas}">
+        <!-- LISTAGEM -->
+        <section class="painel">
 
-                <td th:text="${r.id}"></td>
+            <h2>Receitas Cadastradas</h2>
 
-                <td th:text="${r.descricao}"></td>
+            <div class="tabela-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Data</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
 
-                <td th:text="${r.valor}"></td>
+                    <tbody>
 
-                <td th:text="${r.data}"></td>
-                <td> 
- <td>
-    <a th:href="@{/receitas/editar/{id}(id=${r.id})}">
-        Editar
-    </a>
+                        <tr th:each="r : ${receitas}">
+                            <td th:text="${r.id}"></td>
 
-    |
+                            <td th:text="${r.descricao}"></td>
 
-    <a th:href="@{/receitas/excluir/{id}(id=${r.id})}"
-       onclick="return confirm('Tem certeza que deseja excluir esta receita?');">
-        Excluir
-    </a>
-</td>
+                            <td class="valor">
+                                R$ <span th:text="${#numbers.formatDecimal(r.valor, 1, 'POINT', 2, 'COMMA')}"></span>
+                            </td>
 
-            </tr>
+                            <td th:text="${r.data}"></td>
 
-        </tbody>
+                            <td>
+                                <div class="acoes">
 
-    </table>
+                                    <a class="editar"
+                                       th:href="@{/receitas/editar/{id}(id=${r.id})}">
+                                        Editar
+                                    </a>
 
-    <br>
+                                    <a class="excluir"
+                                       th:href="@{/receitas/excluir/{id}(id=${r.id})}"
+                                       onclick="return confirm('Tem certeza que deseja excluir esta receita?');">
+                                        Excluir
+                                    </a>
 
-    <a href="/login">Voltar</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(receitas)}">
+                            <td colspan="5" class="vazio">
+                                Nenhuma receita cadastrada.
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
 
 </body>
-
 </html>

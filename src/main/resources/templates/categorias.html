@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Categorias</title>
+</head>
+<body>
+
+    <h1>Cadastro de Categorias</h1>
+
+    <form th:action="@{/categorias/salvar}"
+          th:object="${categoria}" method="post">
+
+        <label>Nome da categoria:</label>
+        <input type="text" th:field="*{nome}" required>
+
+        <label>Tipo:</label>
+        <select th:field="*{tipo}" required>
+            <option value="">Selecione</option>
+            <option value="RECEITA">Receita</option>
+            <option value="DESPESA">Despesa</option>
+        </select>
+
+        <button type="submit">Salvar categoria</button>
+    </form>
+
+    <h2>Categorias cadastradas</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="cat : ${categorias}">
+                <td th:text="${cat.nome}"></td>
+                <td th:text="${cat.tipo}"></td>
+                <td>
+                    <a th:href="@{/categorias/editar/{id}(id=${cat.id})}">
+                        Editar
+                    </a>
+
+                    |
+
+                    <a th:href="@{/categorias/excluir/{id}(id=${cat.id})}"
+                       onclick="return confirm('Deseja excluir esta categoria?')">
+                        Excluir
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><a th:href="@{/inicio}">Voltar ao início</a></p>
+
+</body>
+</html>
