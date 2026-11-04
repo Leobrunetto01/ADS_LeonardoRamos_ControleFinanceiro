@@ -1,35 +1,247 @@
+
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Login - Controle Financeiro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Controle Financeiro</title>
+
+    <style>
+        :root {
+            --azul: #10253e;
+            --azul-claro: #1b3b55;
+            --verde: #19b77a;
+            --texto: #1c2938;
+            --cinza: #738194;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(
+                135deg,
+                #10253e 0%,
+                #1b3b55 100%
+            );
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 430px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: #35d399;
+            font-size: 32px;
+            margin: 0 0 10px;
+        }
+
+        .logo p {
+            color: #c9d5e3;
+            font-size: 15px;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 40px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.18);
+        }
+
+        .card h2 {
+            color: var(--azul);
+            text-align: center;
+            font-size: 26px;
+            margin: 0 0 10px;
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: var(--cinza);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .campo {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #35485b;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 9px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d8e0e8;
+            border-radius: 10px;
+            background: #fbfcfe;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--verde);
+            box-shadow: 0 0 0 3px rgba(25,183,122,0.12);
+        }
+
+        .botao {
+            width: 100%;
+            padding: 15px;
+            background: var(--verde);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+
+        .botao:hover {
+            background: #129466;
+            transform: translateY(-2px);
+        }
+
+        .erro {
+            background: #ffebed;
+            color: #c73542;
+            border: 1px solid #ffd1d7;
+            border-radius: 10px;
+            padding: 13px;
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .cadastro {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--cinza);
+            font-size: 14px;
+        }
+
+        .cadastro a {
+            color: #159b68;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .cadastro a:hover {
+            text-decoration: underline;
+        }
+
+        .rodape {
+            text-align: center;
+            color: #aabacb;
+            font-size: 12px;
+            margin-top: 25px;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 28px 22px;
+            }
+
+            .logo h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Login</h1>
+<div class="container">
 
-    <form action="/login" method="post">
+    <!-- LOGO -->
+    <header class="logo">
+        <h1>💰 Financeiro</h1>
+        <p>Seu dinheiro sob controle</p>
+    </header>
 
-        <label>E-mail:</label>
-        <input type="email" name="email" required>
+    <!-- FORMULÁRIO -->
+    <main class="card">
 
-        <br><br>
+        <h2>Bem-vindo!</h2>
 
-        <label>Senha:</label>
-        <input type="password" name="senha" required>
+        <p class="subtitulo">
+            Entre na sua conta para continuar
+        </p>
 
-        <br><br>
+        <form th:action="@{/login}" method="post">
 
-        <button type="submit">Entrar</button>
+            <div class="campo">
+                <label for="email">E-mail</label>
 
-    </form>
+                <input type="email"
+                       id="email"
+                       name="email"
+                       placeholder="seuemail@exemplo.com"
+                       autocomplete="username"
+                       required>
+            </div>
 
-    <p th:if="${erro}" th:text="${erro}"></p>
+            <div class="campo">
+                <label for="senha">Senha</label>
 
-    <p>
-        Ainda não possui uma conta?
-        <a href="/cadastro">Cadastre-se</a>
-    </p>
+                <input type="password"
+                       id="senha"
+                       name="senha"
+                       placeholder="Digite sua senha"
+                       autocomplete="current-password"
+                       required>
+            </div>
+
+            <button type="submit" class="botao">
+                Entrar
+            </button>
+
+        </form>
+
+        <!-- MENSAGEM DE ERRO -->
+        <div class="erro"
+             th:if="${erro}"
+             th:text="${erro}">
+        </div>
+
+        <!-- CADASTRO -->
+        <div class="cadastro">
+            Ainda não possui uma conta?
+            <a th:href="@{/cadastro}">
+                Cadastre-se
+            </a>
+        </div>
+
+    </main>
+
+    <footer class="rodape">
+        Controle Financeiro Pessoal
+    </footer>
+
+</div>
 
 </body>
 </html>
