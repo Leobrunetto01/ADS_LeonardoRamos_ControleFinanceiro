@@ -1,42 +1,265 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
-    <title>Editar Receita</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Receita | Controle Financeiro</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fa;
+            color: #1c2938;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 255px;
+            background: #10253e;
+            color: white;
+            padding: 30px 20px;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            color: #35d399;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 45px;
+        }
+
+        .menu-titulo {
+            color: #8da3b9;
+            font-size: 11px;
+            letter-spacing: 2px;
+            margin: 25px 15px 12px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #c9d5e3;
+            padding: 15px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.ativo {
+            background: #1b3b55;
+            color: #35d399;
+        }
+
+        .conteudo {
+            flex: 1;
+            min-width: 0;
+            padding: 40px;
+        }
+
+        .topo {
+            margin-bottom: 35px;
+        }
+
+        .topo h1 {
+            color: #10253e;
+            margin: 0 0 10px;
+            font-size: 30px;
+        }
+
+        .topo p {
+            color: #738194;
+            margin: 0;
+        }
+
+        .painel {
+            background: white;
+            padding: 35px;
+            max-width: 800px;
+            border-radius: 16px;
+            border: 1px solid #e8edf3;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+        }
+
+        .painel h2 {
+            margin: 0 0 10px;
+            color: #10253e;
+        }
+
+        .painel p {
+            color: #738194;
+            margin-bottom: 30px;
+        }
+
+        .formulario {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #35485b;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d8e0e8;
+            border-radius: 10px;
+            font-size: 15px;
+            background: #fbfcfe;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #19b77a;
+            box-shadow: 0 0 0 3px rgba(25,183,122,0.12);
+        }
+
+        .acoes {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .botao {
+            display: inline-block;
+            padding: 14px 22px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .salvar {
+            background: #19b77a;
+            color: white;
+        }
+
+        .salvar:hover {
+            background: #129466;
+        }
+
+        .cancelar {
+            background: #e8edf3;
+            color: #10253e;
+        }
+
+        @media (max-width: 750px) {
+            .layout { flex-direction: column; }
+            .sidebar { width: 100%; padding: 20px; }
+            .logo { margin-bottom: 15px; }
+            .sidebar nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .sidebar a { margin: 0; }
+            .menu-titulo { display: none; }
+            .conteudo { padding: 20px; }
+            .painel { padding: 25px; }
+            .acoes { flex-direction: column; }
+            .botao { text-align: center; }
+        }
+    </style>
 </head>
 
 <body>
+<div class="layout">
 
-    <h1>Editar Receita</h1>
+    <aside class="sidebar">
+        <div class="logo">💰 Financeiro</div>
+        <div class="menu-titulo">MENU PRINCIPAL</div>
 
-    <form th:action="@{/receitas/salvar}" th:object="${receita}" method="post">
+        <nav>
+            <a th:href="@{/inicio}">🏠 Início</a>
+            <a th:href="@{/receitas}" class="ativo">💵 Receitas</a>
+            <a th:href="@{/despesas}">💸 Despesas</a>
+            <a th:href="@{/categorias}">📁 Categorias</a>
+            <a th:href="@{/logout}">🚪 Sair</a>
+        </nav>
+    </aside>
 
-        <input type="hidden" th:field="*{id}">
+    <main class="conteudo">
 
-        <label>Descrição:</label>
-        <input type="text" th:field="*{descricao}" required>
+        <header class="topo">
+            <h1>✏️ Editar Receita</h1>
+            <p>Altere os dados da receita selecionada.</p>
+        </header>
 
-        <br><br>
+        <section class="painel">
 
-        <label>Valor:</label>
-        <input type="number" step="0.01" th:field="*{valor}" required>
+            <h2>Informações da Receita</h2>
+            <p>Atualize os campos abaixo e salve as alterações.</p>
 
-        <br><br>
+            <form th:action="@{/receitas/salvar}"
+                  th:object="${receita}"
+                  method="post"
+                  class="formulario">
 
-        <label>Data:</label>
-        <input type="date" th:field="*{data}" required>
+                <!-- ID da receita que será editada -->
+                <input type="hidden" th:field="*{id}">
 
-        <br><br>
+                <div class="campo">
+                    <label for="descricao">Descrição</label>
+                    <input type="text"
+                           id="descricao"
+                           th:field="*{descricao}"
+                           required>
+                </div>
 
-        <button type="submit">Salvar Alterações</button>
+                <div class="campo">
+                    <label for="valor">Valor (R$)</label>
+                    <input type="number"
+                           id="valor"
+                           th:field="*{valor}"
+                           step="0.01"
+                           min="0.01"
+                           required>
+                </div>
 
-    </form>
+                <div class="campo">
+                    <label for="data">Data</label>
+                    <input type="date"
+                           id="data"
+                           th:field="*{data}"
+                           th:value="${receita.data != null ? #temporals.format(receita.data, 'yyyy-MM-dd') : ''}"
+                           required>
+                </div>
 
-    <br>
+                <div class="acoes">
+                    <button type="submit" class="botao salvar">
+                        💾 Salvar Alterações
+                    </button>
 
-    <a href="/receitas">Voltar para Receitas</a>
+                    <a th:href="@{/receitas}" class="botao cancelar">
+                        Cancelar
+                    </a>
+                </div>
 
+            </form>
+
+        </section>
+
+    </main>
+</div>
 </body>
-
 </html>

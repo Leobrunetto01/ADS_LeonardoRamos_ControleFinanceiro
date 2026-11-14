@@ -14,12 +14,9 @@
             --fundo: #f3f6fa;
             --texto: #1c2938;
             --cinza: #738194;
-            --vermelho: #d94853;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -33,14 +30,12 @@
             min-height: 100vh;
         }
 
-        /* MENU LATERAL */
-
         .sidebar {
             width: 255px;
             flex-shrink: 0;
             background: var(--azul);
-            color: white;
             padding: 30px 20px;
+            color: white;
         }
 
         .logo {
@@ -60,10 +55,10 @@
 
         .sidebar a {
             display: block;
-            color: #c9d5e3;
-            text-decoration: none;
             padding: 15px;
             margin-bottom: 8px;
+            color: #c9d5e3;
+            text-decoration: none;
             border-radius: 10px;
             transition: 0.2s;
         }
@@ -73,8 +68,6 @@
             background: var(--azul-claro);
             color: #35d399;
         }
-
-        /* CONTEÚDO */
 
         .conteudo {
             flex: 1;
@@ -97,8 +90,6 @@
             color: var(--cinza);
         }
 
-        /* PAINÉIS */
-
         .painel {
             background: white;
             padding: 30px;
@@ -118,8 +109,6 @@
             color: var(--cinza);
             margin: 0 0 25px;
         }
-
-        /* FORMULÁRIO */
 
         .formulario {
             display: grid;
@@ -147,7 +136,6 @@
             border-radius: 10px;
             font-size: 15px;
             background: #fbfcfe;
-            transition: 0.2s;
         }
 
         input:focus {
@@ -171,15 +159,11 @@
             font-weight: bold;
             cursor: pointer;
             text-decoration: none;
-            transition: 0.2s;
         }
 
         .botao:hover {
             background: #129466;
-            transform: translateY(-2px);
         }
-
-        /* TABELA */
 
         .tabela-container {
             overflow-x: auto;
@@ -187,8 +171,8 @@
 
         table {
             width: 100%;
-            min-width: 650px;
             border-collapse: collapse;
+            min-width: 650px;
         }
 
         th, td {
@@ -202,7 +186,6 @@
             color: #526579;
             font-size: 13px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         tbody tr:hover {
@@ -210,7 +193,7 @@
         }
 
         .valor {
-            color: var(--vermelho);
+            color: #d94853;
             font-weight: bold;
             white-space: nowrap;
         }
@@ -221,15 +204,13 @@
             flex-wrap: wrap;
         }
 
-        .editar,
-        .excluir {
+        .editar, .excluir {
             display: inline-block;
             padding: 9px 14px;
             border-radius: 8px;
             text-decoration: none;
             font-size: 13px;
             font-weight: bold;
-            transition: 0.2s;
         }
 
         .editar {
@@ -237,17 +218,9 @@
             color: #2878c8;
         }
 
-        .editar:hover {
-            background: #d4e6ff;
-        }
-
         .excluir {
             background: #ffebed;
-            color: var(--vermelho);
-        }
-
-        .excluir:hover {
-            background: #ffd8dd;
+            color: #d94853;
         }
 
         .vazio {
@@ -256,8 +229,6 @@
             padding: 35px;
         }
 
-        /* RESPONSIVIDADE */
-
         @media (max-width: 1000px) {
             .formulario {
                 grid-template-columns: 1fr 1fr;
@@ -265,18 +236,9 @@
         }
 
         @media (max-width: 750px) {
-            .layout {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                padding: 20px;
-            }
-
-            .logo {
-                margin-bottom: 15px;
-            }
+            .layout { flex-direction: column; }
+            .sidebar { width: 100%; padding: 20px; }
+            .logo { margin-bottom: 15px; }
 
             .sidebar nav {
                 display: flex;
@@ -284,57 +246,34 @@
                 gap: 6px;
             }
 
-            .sidebar a {
-                margin: 0;
-            }
-
-            .menu-titulo {
-                display: none;
-            }
-
-            .conteudo {
-                padding: 20px;
-            }
-
-            .topo h1 {
-                font-size: 25px;
-            }
-
-            .painel {
-                padding: 20px;
-            }
-
-            .formulario {
-                grid-template-columns: 1fr;
-            }
-
-            .botao {
-                width: 100%;
-            }
+            .sidebar a { margin: 0; }
+            .menu-titulo { display: none; }
+            .conteudo { padding: 20px; }
+            .painel { padding: 20px; }
+            .formulario { grid-template-columns: 1fr; }
+            .botao { width: 100%; }
         }
     </style>
 </head>
 
 <body>
-
 <div class="layout">
 
-    <!-- MENU LATERAL -->
     <aside class="sidebar">
         <div class="logo">💰 Financeiro</div>
-
         <div class="menu-titulo">Menu principal</div>
 
         <nav>
-            <a th:href="@{/login}">🏠 Início</a>
+            <a th:href="@{/inicio}">🏠 Início</a>
             <a th:href="@{/receitas}">💵 Receitas</a>
-            <a th:href="@{/despesas}" class="ativo">💸 Despesas</a>
+            <a th:href="@{/despesas}" class="ativo">
+                💸 Despesas
+            </a>
             <a th:href="@{/categorias}">📁 Categorias</a>
-            <a th:href="@{/login}">🚪 Sair</a>
+            <a th:href="@{/logout}">🚪 Sair</a>
         </nav>
     </aside>
 
-    <!-- CONTEÚDO PRINCIPAL -->
     <main class="conteudo">
 
         <header class="topo">
@@ -342,11 +281,9 @@
             <p>Cadastre e acompanhe suas saídas financeiras.</p>
         </header>
 
-        <!-- FORMULÁRIO -->
         <section class="painel">
-
             <h2>Nova Despesa</h2>
-            <p>Preencha os campos para registrar uma nova despesa.</p>
+            <p>Preencha os campos para adicionar uma despesa.</p>
 
             <form th:action="@{/despesas/salvar}"
                   th:object="${despesa}"
@@ -358,7 +295,7 @@
                     <input type="text"
                            id="descricao"
                            th:field="*{descricao}"
-                           placeholder="Ex.: Supermercado, aluguel"
+                           placeholder="Ex.: Aluguel, mercado, contas"
                            required>
                 </div>
 
@@ -366,8 +303,8 @@
                     <label for="valor">Valor (R$)</label>
                     <input type="number"
                            id="valor"
-                           min="0.01"
                            step="0.01"
+                           min="0.01"
                            th:field="*{valor}"
                            placeholder="0,00"
                            required>
@@ -386,13 +323,10 @@
                         + Cadastrar Despesa
                     </button>
                 </div>
-
             </form>
         </section>
 
-        <!-- LISTAGEM -->
         <section class="painel">
-
             <h2>Despesas Cadastradas</h2>
             <p>Consulte, edite ou exclua suas despesas.</p>
 
@@ -409,11 +343,8 @@
                     </thead>
 
                     <tbody>
-
                         <tr th:each="d : ${despesas}">
-
                             <td th:text="${d.id}"></td>
-
                             <td th:text="${d.descricao}"></td>
 
                             <td class="valor">
@@ -425,7 +356,6 @@
 
                             <td>
                                 <div class="acoes">
-
                                     <a class="editar"
                                        th:href="@{/despesas/editar/{id}(id=${d.id})}">
                                         ✏️ Editar
@@ -433,10 +363,9 @@
 
                                     <a class="excluir"
                                        th:href="@{/despesas/excluir/{id}(id=${d.id})}"
-                                       onclick="return confirm('Deseja excluir esta despesa?');">
+                                       onclick="return confirm('Tem certeza que deseja excluir esta despesa?');">
                                         🗑️ Excluir
                                     </a>
-
                                 </div>
                             </td>
                         </tr>
@@ -446,7 +375,6 @@
                                 Nenhuma despesa cadastrada até o momento.
                             </td>
                         </tr>
-
                     </tbody>
                 </table>
             </div>
@@ -454,6 +382,5 @@
 
     </main>
 </div>
-
 </body>
 </html>

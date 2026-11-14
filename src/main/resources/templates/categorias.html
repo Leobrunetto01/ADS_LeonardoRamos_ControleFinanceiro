@@ -1,7 +1,6 @@
 
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,12 +14,9 @@
             --fundo: #f3f6fa;
             --texto: #1c2938;
             --cinza: #738194;
-            --vermelho: #d94853;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -34,14 +30,12 @@
             min-height: 100vh;
         }
 
-        /* MENU LATERAL */
-
         .sidebar {
             width: 255px;
             flex-shrink: 0;
             background: var(--azul);
-            color: white;
             padding: 30px 20px;
+            color: white;
         }
 
         .logo {
@@ -61,12 +55,11 @@
 
         .sidebar a {
             display: block;
-            color: #c9d5e3;
-            text-decoration: none;
             padding: 15px;
             margin-bottom: 8px;
+            color: #c9d5e3;
+            text-decoration: none;
             border-radius: 10px;
-            transition: 0.2s;
         }
 
         .sidebar a:hover,
@@ -74,8 +67,6 @@
             background: var(--azul-claro);
             color: #35d399;
         }
-
-        /* CONTEÚDO */
 
         .conteudo {
             flex: 1;
@@ -98,8 +89,6 @@
             color: var(--cinza);
         }
 
-        /* PAINÉIS */
-
         .painel {
             background: white;
             padding: 30px;
@@ -120,8 +109,6 @@
             margin: 0 0 25px;
         }
 
-        /* FORMULÁRIO */
-
         .formulario {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -141,23 +128,18 @@
             color: #35485b;
         }
 
-        input,
-        select {
+        input, select {
             width: 100%;
             padding: 14px;
             border: 1px solid #d8e0e8;
             border-radius: 10px;
             font-size: 15px;
             background: #fbfcfe;
-            color: var(--texto);
-            transition: 0.2s;
         }
 
-        input:focus,
-        select:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: var(--verde);
-            box-shadow: 0 0 0 3px rgba(25,183,122,0.12);
         }
 
         .form-acoes {
@@ -175,15 +157,11 @@
             font-weight: bold;
             cursor: pointer;
             text-decoration: none;
-            transition: 0.2s;
         }
 
         .botao:hover {
             background: #129466;
-            transform: translateY(-2px);
         }
-
-        /* TABELA */
 
         .tabela-container {
             overflow-x: auto;
@@ -191,12 +169,11 @@
 
         table {
             width: 100%;
-            min-width: 500px;
             border-collapse: collapse;
+            min-width: 550px;
         }
 
-        th,
-        td {
+        th, td {
             padding: 17px;
             text-align: left;
             border-bottom: 1px solid #edf0f4;
@@ -207,34 +184,11 @@
             color: #526579;
             font-size: 13px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         tbody tr:hover {
             background: #f9fbfd;
         }
-
-        /* IDENTIFICAÇÃO DO TIPO */
-
-        .tipo {
-            display: inline-block;
-            padding: 8px 13px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .tipo-receita {
-            background: #e4f8ef;
-            color: #12865b;
-        }
-
-        .tipo-despesa {
-            background: #ffebed;
-            color: var(--vermelho);
-        }
-
-        /* AÇÕES */
 
         .acoes {
             display: flex;
@@ -242,15 +196,13 @@
             flex-wrap: wrap;
         }
 
-        .editar,
-        .excluir {
+        .editar, .excluir {
             display: inline-block;
             padding: 9px 14px;
             border-radius: 8px;
             text-decoration: none;
             font-size: 13px;
             font-weight: bold;
-            transition: 0.2s;
         }
 
         .editar {
@@ -258,17 +210,9 @@
             color: #2878c8;
         }
 
-        .editar:hover {
-            background: #d4e6ff;
-        }
-
         .excluir {
             background: #ffebed;
-            color: var(--vermelho);
-        }
-
-        .excluir:hover {
-            background: #ffd8dd;
+            color: #d94853;
         }
 
         .vazio {
@@ -277,21 +221,10 @@
             padding: 35px;
         }
 
-        /* RESPONSIVIDADE */
-
         @media (max-width: 750px) {
-            .layout {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                padding: 20px;
-            }
-
-            .logo {
-                margin-bottom: 15px;
-            }
+            .layout { flex-direction: column; }
+            .sidebar { width: 100%; padding: 20px; }
+            .logo { margin-bottom: 15px; }
 
             .sidebar nav {
                 display: flex;
@@ -299,61 +232,35 @@
                 gap: 6px;
             }
 
-            .sidebar a {
-                margin: 0;
-            }
-
-            .menu-titulo {
-                display: none;
-            }
-
-            .conteudo {
-                padding: 20px;
-            }
-
-            .topo h1 {
-                font-size: 25px;
-            }
-
-            .painel {
-                padding: 20px;
-            }
-
-            .formulario {
-                grid-template-columns: 1fr;
-            }
-
-            .botao {
-                width: 100%;
-            }
+            .sidebar a { margin: 0; }
+            .menu-titulo { display: none; }
+            .conteudo { padding: 20px; }
+            .painel { padding: 20px; }
+            .formulario { grid-template-columns: 1fr; }
+            .form-acoes { grid-column: auto; }
+            .botao { width: 100%; }
         }
     </style>
 </head>
 
 <body>
-
 <div class="layout">
 
-    <!-- MENU LATERAL -->
     <aside class="sidebar">
-
         <div class="logo">💰 Financeiro</div>
-
         <div class="menu-titulo">Menu principal</div>
 
         <nav>
-            <a th:href="@{/login}">🏠 Início</a>
+            <a th:href="@{/inicio}">🏠 Início</a>
             <a th:href="@{/receitas}">💵 Receitas</a>
             <a th:href="@{/despesas}">💸 Despesas</a>
             <a th:href="@{/categorias}" class="ativo">
                 📁 Categorias
             </a>
-            <a th:href="@{/login}">🚪 Sair</a>
+            <a th:href="@{/logout}">🚪 Sair</a>
         </nav>
-
     </aside>
 
-    <!-- CONTEÚDO PRINCIPAL -->
     <main class="conteudo">
 
         <header class="topo">
@@ -361,11 +268,9 @@
             <p>Organize suas receitas e despesas por categoria.</p>
         </header>
 
-        <!-- FORMULÁRIO -->
         <section class="painel">
-
             <h2>Nova Categoria</h2>
-            <p>Crie categorias para organizar suas movimentações.</p>
+            <p>Preencha os campos para adicionar uma categoria.</p>
 
             <form th:action="@{/categorias/salvar}"
                   th:object="${categoria}"
@@ -373,11 +278,11 @@
                   class="formulario">
 
                 <div class="campo">
-                    <label for="nome">Nome da categoria</label>
+                    <label for="nome">Nome da Categoria</label>
                     <input type="text"
                            id="nome"
                            th:field="*{nome}"
-                           placeholder="Ex.: Alimentação, Salário, Transporte"
+                           placeholder="Ex.: Alimentação, Salário"
                            required>
                 </div>
 
@@ -397,22 +302,18 @@
                         + Cadastrar Categoria
                     </button>
                 </div>
-
             </form>
-
         </section>
 
-        <!-- LISTAGEM -->
         <section class="painel">
-
             <h2>Categorias Cadastradas</h2>
             <p>Consulte, edite ou exclua suas categorias.</p>
 
             <div class="tabela-container">
                 <table>
-
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Nome</th>
                             <th>Tipo</th>
                             <th>Ações</th>
@@ -420,53 +321,38 @@
                     </thead>
 
                     <tbody>
-
-                        <tr th:each="cat : ${categorias}">
-
-                            <td th:text="${cat.nome}"></td>
-
-                            <td>
-                                <span class="tipo"
-                                      th:classappend="${cat.tipo == 'RECEITA'} ? ' tipo-receita' : ' tipo-despesa'"
-                                      th:text="${cat.tipo == 'RECEITA'} ? 'Receita' : 'Despesa'">
-                                </span>
-                            </td>
+                        <tr th:each="c : ${categorias}">
+                            <td th:text="${c.id}"></td>
+                            <td th:text="${c.nome}"></td>
+                            <td th:text="${c.tipo}"></td>
 
                             <td>
                                 <div class="acoes">
-
                                     <a class="editar"
-                                       th:href="@{/categorias/editar/{id}(id=${cat.id})}">
+                                       th:href="@{/categorias/editar/{id}(id=${c.id})}">
                                         ✏️ Editar
                                     </a>
 
                                     <a class="excluir"
-                                       th:href="@{/categorias/excluir/{id}(id=${cat.id})}"
-                                       onclick="return confirm('Deseja excluir esta categoria?');">
+                                       th:href="@{/categorias/excluir/{id}(id=${c.id})}"
+                                       onclick="return confirm('Tem certeza que deseja excluir esta categoria?');">
                                         🗑️ Excluir
                                     </a>
-
                                 </div>
                             </td>
-
                         </tr>
 
                         <tr th:if="${#lists.isEmpty(categorias)}">
-                            <td colspan="3" class="vazio">
+                            <td colspan="4" class="vazio">
                                 Nenhuma categoria cadastrada até o momento.
                             </td>
                         </tr>
-
                     </tbody>
-
                 </table>
             </div>
-
         </section>
 
     </main>
-
 </div>
-
 </body>
 </html>

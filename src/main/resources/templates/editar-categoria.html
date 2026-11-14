@@ -1,32 +1,333 @@
 
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Editar Categoria</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Categoria | Controle Financeiro</title>
+
+    <style>
+        :root {
+            --azul: #10253e;
+            --azul-claro: #1b3b55;
+            --verde: #19b77a;
+            --fundo: #f3f6fa;
+            --texto: #1c2938;
+            --cinza: #738194;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--fundo);
+            color: var(--texto);
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 255px;
+            flex-shrink: 0;
+            background: var(--azul);
+            padding: 30px 20px;
+            color: white;
+        }
+
+        .logo {
+            color: #35d399;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 45px;
+        }
+
+        .menu-titulo {
+            color: #8da3b9;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 25px 15px 12px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 15px;
+            margin-bottom: 8px;
+            color: #c9d5e3;
+            text-decoration: none;
+            border-radius: 10px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.ativo {
+            background: var(--azul-claro);
+            color: #35d399;
+        }
+
+        .conteudo {
+            flex: 1;
+            min-width: 0;
+            padding: 40px;
+        }
+
+        .topo {
+            margin-bottom: 35px;
+        }
+
+        .topo h1 {
+            margin: 0 0 10px;
+            color: var(--azul);
+            font-size: 30px;
+        }
+
+        .topo p {
+            margin: 0;
+            color: var(--cinza);
+        }
+
+        .painel {
+            background: white;
+            padding: 35px;
+            max-width: 800px;
+            border-radius: 16px;
+            border: 1px solid #e8edf3;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+        }
+
+        .painel h2 {
+            margin: 0 0 10px;
+            color: var(--azul);
+            font-size: 22px;
+        }
+
+        .painel p {
+            color: var(--cinza);
+            margin-bottom: 30px;
+        }
+
+        .formulario {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #35485b;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d8e0e8;
+            border-radius: 10px;
+            font-size: 15px;
+            background: #fbfcfe;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--verde);
+            box-shadow: 0 0 0 3px rgba(25,183,122,0.12);
+        }
+
+        .acoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 10px;
+        }
+
+        .botao {
+            display: inline-block;
+            padding: 14px 22px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .salvar {
+            background: var(--verde);
+            color: white;
+        }
+
+        .salvar:hover {
+            background: #129466;
+        }
+
+        .cancelar {
+            background: #e8edf3;
+            color: var(--azul);
+        }
+
+        .cancelar:hover {
+            background: #d8e0e8;
+        }
+
+        @media (max-width: 750px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .logo {
+                margin-bottom: 15px;
+            }
+
+            .sidebar nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+            .sidebar a {
+                margin: 0;
+            }
+
+            .menu-titulo {
+                display: none;
+            }
+
+            .conteudo {
+                padding: 20px;
+            }
+
+            .painel {
+                padding: 25px;
+            }
+
+            .acoes {
+                flex-direction: column;
+            }
+
+            .botao {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Editar Categoria</h1>
+<div class="layout">
 
-    <form th:action="@{/categorias/atualizar}"
-          th:object="${categoria}" method="post">
+    <!-- MENU LATERAL -->
+    <aside class="sidebar">
 
-        <input type="hidden" th:field="*{id}">
+        <div class="logo">💰 Financeiro</div>
 
-        <label>Nome:</label>
-        <input type="text" th:field="*{nome}" required>
+        <div class="menu-titulo">MENU PRINCIPAL</div>
 
-        <label>Tipo:</label>
-        <select th:field="*{tipo}" required>
-            <option value="RECEITA">Receita</option>
-            <option value="DESPESA">Despesa</option>
-        </select>
+        <nav>
+            <a th:href="@{/inicio}">🏠 Início</a>
 
-        <button type="submit">Salvar alterações</button>
-    </form>
+            <a th:href="@{/receitas}">💵 Receitas</a>
 
-    <p><a th:href="@{/categorias}">Cancelar</a></p>
+            <a th:href="@{/despesas}">💸 Despesas</a>
+
+            <a th:href="@{/categorias}" class="ativo">
+                📁 Categorias
+            </a>
+
+            <a th:href="@{/logout}">🚪 Sair</a>
+        </nav>
+
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="conteudo">
+
+        <header class="topo">
+            <h1>✏️ Editar Categoria</h1>
+            <p>Altere os dados da categoria selecionada.</p>
+        </header>
+
+        <section class="painel">
+
+            <h2>Informações da Categoria</h2>
+
+            <p>
+                Atualize os campos abaixo e salve as alterações.
+            </p>
+
+            <form th:action="@{/categorias/salvar}"
+                  th:object="${categoria}"
+                  method="post"
+                  class="formulario">
+
+                <!-- ID DA CATEGORIA -->
+                <input type="hidden" th:field="*{id}">
+
+                <!-- NOME -->
+                <div class="campo">
+                    <label for="nome">Nome da Categoria</label>
+
+                    <input type="text"
+                           id="nome"
+                           th:field="*{nome}"
+                           placeholder="Digite o nome da categoria"
+                           required>
+                </div>
+
+                <!-- TIPO -->
+                <div class="campo">
+                    <label for="tipo">Tipo da Categoria</label>
+
+                    <select id="tipo"
+                            th:field="*{tipo}"
+                            required>
+
+                        <option value="RECEITA">Receita</option>
+
+                        <option value="DESPESA">Despesa</option>
+
+                    </select>
+                </div>
+
+                <!-- BOTÕES -->
+                <div class="acoes">
+
+                    <button type="submit"
+                            class="botao salvar">
+                        💾 Salvar Alterações
+                    </button>
+
+                    <a th:href="@{/categorias}"
+                       class="botao cancelar">
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</div>
 
 </body>
 </html>

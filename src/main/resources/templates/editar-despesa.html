@@ -1,47 +1,318 @@
 
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Despesa</title>
+    <title>Editar Despesa | Controle Financeiro</title>
+
+    <style>
+        :root {
+            --azul: #10253e;
+            --azul-claro: #1b3b55;
+            --verde: #19b77a;
+            --fundo: #f3f6fa;
+            --texto: #1c2938;
+            --cinza: #738194;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--fundo);
+            color: var(--texto);
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 255px;
+            flex-shrink: 0;
+            background: var(--azul);
+            padding: 30px 20px;
+            color: white;
+        }
+
+        .logo {
+            color: #35d399;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 45px;
+        }
+
+        .menu-titulo {
+            color: #8da3b9;
+            font-size: 11px;
+            letter-spacing: 2px;
+            margin: 25px 15px 12px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 15px;
+            margin-bottom: 8px;
+            color: #c9d5e3;
+            text-decoration: none;
+            border-radius: 10px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.ativo {
+            background: var(--azul-claro);
+            color: #35d399;
+        }
+
+        .conteudo {
+            flex: 1;
+            min-width: 0;
+            padding: 40px;
+        }
+
+        .topo {
+            margin-bottom: 35px;
+        }
+
+        .topo h1 {
+            margin: 0 0 10px;
+            color: var(--azul);
+            font-size: 30px;
+        }
+
+        .topo p {
+            margin: 0;
+            color: var(--cinza);
+        }
+
+        .painel {
+            background: white;
+            padding: 35px;
+            max-width: 800px;
+            border-radius: 16px;
+            border: 1px solid #e8edf3;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+        }
+
+        .painel h2 {
+            margin: 0 0 10px;
+            color: var(--azul);
+        }
+
+        .painel p {
+            color: var(--cinza);
+            margin-bottom: 30px;
+        }
+
+        .formulario {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #35485b;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d8e0e8;
+            border-radius: 10px;
+            font-size: 15px;
+            background: #fbfcfe;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--verde);
+            box-shadow: 0 0 0 3px rgba(25,183,122,0.12);
+        }
+
+        .acoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 10px;
+        }
+
+        .botao {
+            display: inline-block;
+            padding: 14px 22px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .salvar {
+            background: var(--verde);
+            color: white;
+        }
+
+        .salvar:hover {
+            background: #129466;
+        }
+
+        .cancelar {
+            background: #e8edf3;
+            color: var(--azul);
+        }
+
+        .cancelar:hover {
+            background: #d8e0e8;
+        }
+
+        @media (max-width: 750px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .logo {
+                margin-bottom: 15px;
+            }
+
+            .sidebar nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+            .sidebar a {
+                margin: 0;
+            }
+
+            .menu-titulo {
+                display: none;
+            }
+
+            .conteudo {
+                padding: 20px;
+            }
+
+            .painel {
+                padding: 25px;
+            }
+
+            .acoes {
+                flex-direction: column;
+            }
+
+            .botao {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
+<div class="layout">
 
-    <h1>Editar Despesa</h1>
+    <aside class="sidebar">
+        <div class="logo">💰 Financeiro</div>
+        <div class="menu-titulo">MENU PRINCIPAL</div>
 
-    <form th:action="@{/despesas/atualizar}"
-          th:object="${despesa}" method="post">
+        <nav>
+            <a th:href="@{/inicio}">🏠 Início</a>
+            <a th:href="@{/receitas}">💵 Receitas</a>
+            <a th:href="@{/despesas}" class="ativo">💸 Despesas</a>
+            <a th:href="@{/categorias}">📁 Categorias</a>
+            <a th:href="@{/logout}">🚪 Sair</a>
+        </nav>
+    </aside>
 
-        <input type="hidden" th:field="*{id}">
+    <main class="conteudo">
 
-        <label for="descricao">Descrição:</label>
-        <input id="descricao" type="text"
-               th:field="*{descricao}" required>
+        <header class="topo">
+            <h1>✏️ Editar Despesa</h1>
+            <p>Altere os dados da despesa selecionada.</p>
+        </header>
 
-        <br><br>
+        <section class="painel">
 
-        <label for="valor">Valor (R$):</label>
-        <input id="valor" type="number" min="0.01"
-               step="0.01" th:field="*{valor}" required>
+            <h2>Informações da Despesa</h2>
+            <p>Atualize os campos abaixo e salve as alterações.</p>
 
-        <br><br>
+            <form th:action="@{/despesas/salvar}"
+                  th:object="${despesa}"
+                  method="post"
+                  class="formulario">
 
-        <label for="data">Data:</label>
-        <input id="data" type="date"
-               th:field="*{data}" required>
+                <!-- ID DA DESPESA -->
+                <input type="hidden" th:field="*{id}">
 
-        <br><br>
+                <!-- DESCRIÇÃO -->
+                <div class="campo">
+                    <label for="descricao">Descrição</label>
 
-        <button type="submit">Salvar Alterações</button>
+                    <input type="text"
+                           id="descricao"
+                           th:field="*{descricao}"
+                           required>
+                </div>
 
-    </form>
+                <!-- VALOR -->
+                <div class="campo">
+                    <label for="valor">Valor (R$)</label>
 
-    <br>
+                    <input type="number"
+                           id="valor"
+                           th:field="*{valor}"
+                           step="0.01"
+                           min="0.01"
+                           required>
+                </div>
 
-    <a th:href="@{/despesas}">Voltar para despesas</a>
+                <!-- DATA -->
+                <div class="campo">
+                    <label for="data">Data</label>
 
+                    <input type="date"
+                           id="data"
+                           th:field="*{data}"
+                           required>
+                </div>
+
+                <!-- BOTÕES -->
+                <div class="acoes">
+
+                    <button type="submit" class="botao salvar">
+                        💾 Salvar Alterações
+                    </button>
+
+                    <a th:href="@{/despesas}"
+                       class="botao cancelar">
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+</div>
 </body>
 </html>
