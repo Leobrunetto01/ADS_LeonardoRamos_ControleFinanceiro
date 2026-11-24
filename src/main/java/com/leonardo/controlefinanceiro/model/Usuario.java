@@ -10,14 +10,14 @@ import jakarta.persistence.Table;
 @Table(name = "usuario")
 public class Usuario {
 
+    // Identificador único utilizado pela sessão após o login.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Dados cadastrais usados na identificação e autenticação do usuário.
     private String nome;
-
     private String email;
-
     private String senha;
 
     public Usuario() {

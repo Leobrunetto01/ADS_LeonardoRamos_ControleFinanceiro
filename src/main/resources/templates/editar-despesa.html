@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -227,6 +226,7 @@
 </head>
 
 <body>
+<!-- Layout principal da tela de edição de despesa. -->
 <div class="layout">
 
     <aside class="sidebar">
@@ -251,64 +251,7 @@
 
         <section class="painel">
 
-            <h2>Informações da Despesa</h2>
-            <p>Atualize os campos abaixo e salve as alterações.</p>
-
-            <form th:action="@{/despesas/salvar}"
-                  th:object="${despesa}"
-                  method="post"
-                  class="formulario">
-
-                <!-- ID DA DESPESA -->
-                <input type="hidden" th:field="*{id}">
-
-                <!-- DESCRIÇÃO -->
-                <div class="campo">
-                    <label for="descricao">Descrição</label>
-
-                    <input type="text"
-                           id="descricao"
-                           th:field="*{descricao}"
-                           required>
-                </div>
-
-                <!-- VALOR -->
-                <div class="campo">
-                    <label for="valor">Valor (R$)</label>
-
-                    <input type="number"
-                           id="valor"
-                           th:field="*{valor}"
-                           step="0.01"
-                           min="0.01"
-                           required>
-                </div>
-
-                <!-- DATA -->
-                <div class="campo">
-                    <label for="data">Data</label>
-
-                    <input type="date"
-                           id="data"
-                           th:field="*{data}"
-                           required>
-                </div>
-
-                <!-- BOTÕES -->
-                <div class="acoes">
-
-                    <button type="submit" class="botao salvar">
-                        💾 Salvar Alterações
-                    </button>
-
-                    <a th:href="@{/despesas}"
-                       class="botao cancelar">
-                        Cancelar
-                    </a>
-
-                </div>
-
-            </form>
+            <!-- Formulário vinculado ao objeto despesa carregado pelo controller. -->
 
         </section>
 

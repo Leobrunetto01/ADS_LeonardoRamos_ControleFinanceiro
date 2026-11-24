@@ -1,4 +1,3 @@
-
 package com.leonardo.controlefinanceiro.model;
 
 import jakarta.persistence.Entity;
@@ -9,10 +8,12 @@ import jakarta.persistence.Id;
 @Entity
 public class Categoria {
 
+    // Identificador gerado automaticamente no banco de dados.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Nome da categoria e seu tipo, como receita ou despesa.
     private String nome;
     private String tipo;
 

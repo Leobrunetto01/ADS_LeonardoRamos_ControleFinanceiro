@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface DespesaRepository extends JpaRepository<Despesa, Long> {
 
+    // Soma todas as despesas e retorna zero quando não houver registros.
     @Query("SELECT COALESCE(SUM(d.valor), 0.0) FROM Despesa d")
     Double calcularTotalDespesas();
 }

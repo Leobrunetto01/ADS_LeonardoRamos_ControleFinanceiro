@@ -1,4 +1,3 @@
-
 package com.leonardo.controlefinanceiro.controller;
 
 import com.leonardo.controlefinanceiro.model.Receita;
@@ -29,6 +28,7 @@ public class ReceitaController {
     }
 
     // CADASTRAR OU ATUALIZAR RECEITA
+    // Se o objeto possuir ID, atualiza uma receita existente; caso contrário, cria uma nova.
     @PostMapping("/salvar")
     public String salvar(@ModelAttribute Receita receita) {
 

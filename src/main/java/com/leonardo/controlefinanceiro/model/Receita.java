@@ -7,14 +7,14 @@ import java.time.LocalDate;
 @Table(name = "receitas")
 public class Receita {
 
+    // Identificador único da receita.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Dados principais da movimentação financeira.
     private String descricao;
-
     private Double valor;
-
     private LocalDate data;
 
     public Receita() {

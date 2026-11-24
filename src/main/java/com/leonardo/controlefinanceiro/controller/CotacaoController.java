@@ -1,4 +1,3 @@
-
 package com.leonardo.controlefinanceiro.controller;
 
 import com.leonardo.controlefinanceiro.service.CotacaoService;
@@ -14,6 +13,7 @@ public class CotacaoController {
         this.cotacaoService = cotacaoService;
     }
 
+    // Expõe as cotações atualizadas em formato JSON para chamadas HTTP.
     @GetMapping("/cotacoes")
     public String consultarCotacoes() {
         return cotacaoService.buscarCotacoes();

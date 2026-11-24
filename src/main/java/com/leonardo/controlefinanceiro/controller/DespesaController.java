@@ -1,4 +1,3 @@
-
 package com.leonardo.controlefinanceiro.controller;
 
 import com.leonardo.controlefinanceiro.model.Despesa;
@@ -17,6 +16,7 @@ public class DespesaController {
         this.despesaRepository = despesaRepository;
     }
 
+    // Lista as despesas e disponibiliza um objeto vazio para o formulário.
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("despesas", despesaRepository.findAll());
@@ -25,12 +25,14 @@ public class DespesaController {
         return "despesas";
     }
 
+    // Persiste os dados enviados pelo formulário de nova despesa.
     @PostMapping("/salvar")
     public String salvar(@ModelAttribute Despesa despesa) {
         despesaRepository.save(despesa);
         return "redirect:/despesas";
     }
 
+    // Localiza a despesa pelo ID para preencher o formulário de edição.
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
         Despesa despesa = despesaRepository.findById(id)
@@ -41,12 +43,14 @@ public class DespesaController {
         return "editar-despesa";
     }
 
+    // Atualiza a despesa existente no banco de dados.
     @PostMapping("/atualizar")
     public String atualizar(@ModelAttribute Despesa despesa) {
         despesaRepository.save(despesa);
         return "redirect:/despesas";
     }
 
+    // Exclui a despesa informada e retorna à lista.
     @GetMapping("/excluir/{id}")
     public String excluir(@PathVariable Long id) {
         despesaRepository.deleteById(id);

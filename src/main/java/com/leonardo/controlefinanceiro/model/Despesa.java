@@ -1,4 +1,3 @@
-
 package com.leonardo.controlefinanceiro.model;
 
 import jakarta.persistence.*;
@@ -8,10 +7,12 @@ import java.time.LocalDate;
 @Table(name = "despesas")
 public class Despesa {
 
+    // Identificador único da despesa.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Descrição, valor monetário e data da despesa.
     private String descricao;
     private Double valor;
     private LocalDate data;

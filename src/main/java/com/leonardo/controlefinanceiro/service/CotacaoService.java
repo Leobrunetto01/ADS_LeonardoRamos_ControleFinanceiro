@@ -1,4 +1,3 @@
-
 package com.leonardo.controlefinanceiro.service;
 
 import org.springframework.stereotype.Service;
@@ -11,6 +10,7 @@ public class CotacaoService {
         "https://economia.awesomeapi.com.br"
     );
 
+    // Consulta os valores de dólar e euro na API externa da AwesomeAPI.
     public String buscarCotacoes() {
         return restClient.get()
                 .uri("/json/last/USD-BRL,EUR-BRL")

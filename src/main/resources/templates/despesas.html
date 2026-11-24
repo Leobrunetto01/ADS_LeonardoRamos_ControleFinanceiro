@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -276,6 +275,7 @@
 
     <main class="conteudo">
 
+        <!-- Cabeçalho da página de despesas. -->
         <header class="topo">
             <h1>💸 Gerenciar Despesas</h1>
             <p>Cadastre e acompanhe suas saídas financeiras.</p>
@@ -327,6 +327,7 @@
         </section>
 
         <section class="painel">
+            <!-- Lista das despesas retornadas pelo controller. -->
             <h2>Despesas Cadastradas</h2>
             <p>Consulte, edite ou exclua suas despesas.</p>
 
@@ -343,6 +344,7 @@
                     </thead>
 
                     <tbody>
+                        <!-- Thymeleaf cria uma linha para cada despesa cadastrada. -->
                         <tr th:each="d : ${despesas}">
                             <td th:text="${d.id}"></td>
                             <td th:text="${d.descricao}"></td>

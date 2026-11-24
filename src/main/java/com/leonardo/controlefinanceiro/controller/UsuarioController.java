@@ -1,4 +1,3 @@
-
 package com.leonardo.controlefinanceiro.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -38,6 +37,7 @@ public class UsuarioController {
         return "cadastro";
     }
 
+    // Impede o cadastro de dois usuários com o mesmo e-mail.
     @PostMapping("/cadastro")
     public String cadastrarUsuario(
             @ModelAttribute Usuario usuario,
@@ -61,6 +61,7 @@ public class UsuarioController {
         return "login";
     }
 
+    // Valida as credenciais e cria a sessão do usuário autenticado.
     @PostMapping("/login")
     public String fazerLogin(
             @RequestParam String email,
@@ -88,6 +89,7 @@ public class UsuarioController {
         return "login";
     }
 
+    // Página inicial protegida: exige que exista um usuário autenticado na sessão.
     @GetMapping("/inicio")
     public String inicio(HttpSession session, Model model) {
 
@@ -106,7 +108,7 @@ public class UsuarioController {
             return "redirect:/login";
         }
 
-        // Resumo financeiro
+        // Calcula o resumo financeiro usado no painel inicial.
         Double totalReceitas =
                 receitaRepository.calcularTotalReceitas();
 

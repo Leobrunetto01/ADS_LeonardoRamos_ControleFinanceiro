@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
+    // Spring Data gera a consulta com base no nome do método.
     Optional<Usuario> findByEmail(String email);
 }
