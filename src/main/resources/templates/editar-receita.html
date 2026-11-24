@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -182,7 +183,6 @@
 </head>
 
 <body>
-<!-- Layout principal da tela de edição de receita. -->
 <div class="layout">
 
     <aside class="sidebar">
@@ -207,7 +207,55 @@
 
         <section class="painel">
 
-            <!-- Formulário vinculado ao objeto receita carregado pelo controller. -->
+            <h2>Informações da Receita</h2>
+            <p>Atualize os campos abaixo e salve as alterações.</p>
+
+            <form th:action="@{/receitas/salvar}"
+                  th:object="${receita}"
+                  method="post"
+                  class="formulario">
+
+                <!-- ID da receita que será editada -->
+                <input type="hidden" th:field="*{id}">
+
+                <div class="campo">
+                    <label for="descricao">Descrição</label>
+                    <input type="text"
+                           id="descricao"
+                           th:field="*{descricao}"
+                           required>
+                </div>
+
+                <div class="campo">
+                    <label for="valor">Valor (R$)</label>
+                    <input type="number"
+                           id="valor"
+                           th:field="*{valor}"
+                           step="0.01"
+                           min="0.01"
+                           required>
+                </div>
+
+                <div class="campo">
+                    <label for="data">Data</label>
+                    <input type="date"
+                           id="data"
+                           th:field="*{data}"
+                           th:value="${receita.data != null ? #temporals.format(receita.data, 'yyyy-MM-dd') : ''}"
+                           required>
+                </div>
+
+                <div class="acoes">
+                    <button type="submit" class="botao salvar">
+                        💾 Salvar Alterações
+                    </button>
+
+                    <a th:href="@{/receitas}" class="botao cancelar">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
 
         </section>
 

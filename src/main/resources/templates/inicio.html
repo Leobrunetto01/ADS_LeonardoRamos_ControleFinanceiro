@@ -415,6 +415,49 @@
         <h2 class="titulo-secao">Resumo Financeiro</h2>
 
         <!-- Cards com os totais financeiros calculados pelo backend. -->
+         <div class="cards">
+
+    <!-- Exibe o valor total das receitas cadastradas. -->
+    <div class="card receitas">
+        <div class="card-topo">
+            <h3>Total de Receitas</h3>
+            <div class="icone">💵</div>
+        </div>
+
+        <div class="valor"
+             th:text="${'R$ ' + #numbers.formatDecimal(totalReceitas, 1, 'POINT', 2, 'COMMA')}">
+            R$ 0,00
+        </div>
+    </div>
+
+    <!-- Exibe o valor total das despesas cadastradas. -->
+    <div class="card despesas">
+        <div class="card-topo">
+            <h3>Total de Despesas</h3>
+            <div class="icone">💸</div>
+        </div>
+
+        <div class="valor"
+             th:text="${'R$ ' + #numbers.formatDecimal(totalDespesas, 1, 'POINT', 2, 'COMMA')}">
+            R$ 0,00
+        </div>
+    </div>
+
+    <!-- Exibe o saldo calculado entre receitas e despesas. -->
+    <div class="card saldo">
+        <div class="card-topo">
+            <h3>Saldo Atual</h3>
+            <div class="icone">💰</div>
+        </div>
+
+        <div class="valor"
+             th:classappend="${saldo < 0 ? 'negativo' : ''}"
+             th:text="${'R$ ' + #numbers.formatDecimal(saldo, 1, 'POINT', 2, 'COMMA')}">
+            R$ 0,00
+        </div>
+    </div>
+
+</div>
 
         <!-- COTAÇÃO DO DÓLAR E EURO -->
 
