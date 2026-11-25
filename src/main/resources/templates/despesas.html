@@ -68,6 +68,28 @@
             color: #35d399;
         }
 
+        /* Botão de saída protegido por POST. */
+        .botao-sair {
+            display: block;
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #c9d5e3;
+            padding: 15px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .botao-sair:hover {
+            background: var(--azul-claro);
+            color: #35d399;
+        }
+
         .conteudo {
             flex: 1;
             min-width: 0;
@@ -220,6 +242,9 @@
         .excluir {
             background: #ffebed;
             color: #d94853;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
         }
 
         .vazio {
@@ -246,6 +271,7 @@
             }
 
             .sidebar a { margin: 0; }
+            .botao-sair { margin: 0; }
             .menu-titulo { display: none; }
             .conteudo { padding: 20px; }
             .painel { padding: 20px; }
@@ -258,18 +284,31 @@
 <body>
 <div class="layout">
 
+    <!-- MENU LATERAL -->
     <aside class="sidebar">
+
         <div class="logo">💰 Financeiro</div>
         <div class="menu-titulo">Menu principal</div>
 
         <nav>
+
             <a th:href="@{/inicio}">🏠 Início</a>
+
             <a th:href="@{/receitas}">💵 Receitas</a>
+
             <a th:href="@{/despesas}" class="ativo">
                 💸 Despesas
             </a>
+
             <a th:href="@{/categorias}">📁 Categorias</a>
-            <a th:href="@{/logout}">🚪 Sair</a>
+
+            <!-- Encerra a sessão utilizando POST. -->
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="botao-sair">
+                    🚪 Sair
+                </button>
+            </form>
+
         </nav>
     </aside>
 
@@ -281,7 +320,9 @@
             <p>Cadastre e acompanhe suas saídas financeiras.</p>
         </header>
 
+        <!-- FORMULÁRIO DE CADASTRO -->
         <section class="painel">
+
             <h2>Nova Despesa</h2>
             <p>Preencha os campos para adicionar uma despesa.</p>
 
@@ -291,16 +332,21 @@
                   class="formulario">
 
                 <div class="campo">
+
                     <label for="descricao">Descrição</label>
+
                     <input type="text"
                            id="descricao"
                            th:field="*{descricao}"
                            placeholder="Ex.: Aluguel, mercado, contas"
                            required>
+
                 </div>
 
                 <div class="campo">
+
                     <label for="valor">Valor (R$)</label>
+
                     <input type="number"
                            id="valor"
                            step="0.01"
@@ -308,31 +354,42 @@
                            th:field="*{valor}"
                            placeholder="0,00"
                            required>
+
                 </div>
 
                 <div class="campo">
+
                     <label for="data">Data</label>
+
                     <input type="date"
                            id="data"
                            th:field="*{data}"
                            required>
+
                 </div>
 
                 <div class="form-acoes">
+
                     <button type="submit" class="botao">
                         + Cadastrar Despesa
                     </button>
+
                 </div>
+
             </form>
+
         </section>
 
+        <!-- LISTAGEM DAS DESPESAS -->
         <section class="painel">
-            <!-- Lista das despesas retornadas pelo controller. -->
+
             <h2>Despesas Cadastradas</h2>
             <p>Consulte, edite ou exclua suas despesas.</p>
 
             <div class="tabela-container">
+
                 <table>
+
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -344,9 +401,12 @@
                     </thead>
 
                     <tbody>
-                        <!-- Thymeleaf cria uma linha para cada despesa cadastrada. -->
+
+                        <!-- Cria uma linha para cada despesa do usuário. -->
                         <tr th:each="d : ${despesas}">
+
                             <td th:text="${d.id}"></td>
+
                             <td th:text="${d.descricao}"></td>
 
                             <td class="valor">
@@ -357,32 +417,52 @@
                             <td th:text="${#temporals.format(d.data, 'dd/MM/yyyy')}"></td>
 
                             <td>
+
                                 <div class="acoes">
+
+                                    <!-- Abre a tela de edição. -->
                                     <a class="editar"
                                        th:href="@{/despesas/editar/{id}(id=${d.id})}">
                                         ✏️ Editar
                                     </a>
 
-                                    <a class="excluir"
-                                       th:href="@{/despesas/excluir/{id}(id=${d.id})}"
-                                       onclick="return confirm('Tem certeza que deseja excluir esta despesa?');">
-                                        🗑️ Excluir
-                                    </a>
+                                    <!-- Exclui a despesa utilizando POST. -->
+                                    <form th:action="@{/despesas/excluir/{id}(id=${d.id})}"
+                                          method="post"
+                                          style="margin: 0;"
+                                          onsubmit="return confirm('Tem certeza que deseja excluir esta despesa?');">
+
+                                        <button type="submit" class="excluir">
+                                            🗑️ Excluir
+                                        </button>
+
+                                    </form>
+
                                 </div>
+
                             </td>
+
                         </tr>
 
+                        <!-- Mensagem quando não existem despesas. -->
                         <tr th:if="${#lists.isEmpty(despesas)}">
+
                             <td colspan="5" class="vazio">
                                 Nenhuma despesa cadastrada até o momento.
                             </td>
+
                         </tr>
+
                     </tbody>
+
                 </table>
+
             </div>
+
         </section>
 
     </main>
+
 </div>
 </body>
 </html>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -54,6 +53,28 @@
 
         .sidebar a:hover,
         .sidebar a.ativo {
+            background: #1b3b55;
+            color: #35d399;
+        }
+
+        /* Botão de saída protegido por POST. */
+        .botao-sair {
+            display: block;
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #c9d5e3;
+            padding: 15px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .botao-sair:hover {
             background: #1b3b55;
             color: #35d399;
         }
@@ -167,12 +188,15 @@
             .layout { flex-direction: column; }
             .sidebar { width: 100%; padding: 20px; }
             .logo { margin-bottom: 15px; }
+
             .sidebar nav {
                 display: flex;
                 flex-wrap: wrap;
                 gap: 6px;
             }
+
             .sidebar a { margin: 0; }
+            .botao-sair { margin: 0; }
             .menu-titulo { display: none; }
             .conteudo { padding: 20px; }
             .painel { padding: 25px; }
@@ -185,29 +209,53 @@
 <body>
 <div class="layout">
 
+    <!-- MENU LATERAL -->
     <aside class="sidebar">
+
         <div class="logo">💰 Financeiro</div>
         <div class="menu-titulo">MENU PRINCIPAL</div>
 
         <nav>
+
             <a th:href="@{/inicio}">🏠 Início</a>
-            <a th:href="@{/receitas}" class="ativo">💵 Receitas</a>
+
+            <a th:href="@{/receitas}" class="ativo">
+                💵 Receitas
+            </a>
+
             <a th:href="@{/despesas}">💸 Despesas</a>
+
             <a th:href="@{/categorias}">📁 Categorias</a>
-            <a th:href="@{/logout}">🚪 Sair</a>
+
+            <!-- Encerra a sessão utilizando POST. -->
+            <form th:action="@{/logout}" method="post">
+
+                <button type="submit" class="botao-sair">
+                    🚪 Sair
+                </button>
+
+            </form>
+
         </nav>
+
     </aside>
 
     <main class="conteudo">
 
+        <!-- CABEÇALHO -->
         <header class="topo">
+
             <h1>✏️ Editar Receita</h1>
+
             <p>Altere os dados da receita selecionada.</p>
+
         </header>
 
+        <!-- FORMULÁRIO DE EDIÇÃO -->
         <section class="painel">
 
             <h2>Informações da Receita</h2>
+
             <p>Atualize os campos abaixo e salve as alterações.</p>
 
             <form th:action="@{/receitas/salvar}"
@@ -215,37 +263,47 @@
                   method="post"
                   class="formulario">
 
-                <!-- ID da receita que será editada -->
+                <!-- Identificador da receita que será editada. -->
                 <input type="hidden" th:field="*{id}">
 
                 <div class="campo">
+
                     <label for="descricao">Descrição</label>
+
                     <input type="text"
                            id="descricao"
                            th:field="*{descricao}"
                            required>
+
                 </div>
 
                 <div class="campo">
+
                     <label for="valor">Valor (R$)</label>
+
                     <input type="number"
                            id="valor"
                            th:field="*{valor}"
                            step="0.01"
                            min="0.01"
                            required>
+
                 </div>
 
                 <div class="campo">
+
                     <label for="data">Data</label>
+
                     <input type="date"
                            id="data"
                            th:field="*{data}"
                            th:value="${receita.data != null ? #temporals.format(receita.data, 'yyyy-MM-dd') : ''}"
                            required>
+
                 </div>
 
                 <div class="acoes">
+
                     <button type="submit" class="botao salvar">
                         💾 Salvar Alterações
                     </button>
@@ -253,6 +311,7 @@
                     <a th:href="@{/receitas}" class="botao cancelar">
                         Cancelar
                     </a>
+
                 </div>
 
             </form>
@@ -260,6 +319,7 @@
         </section>
 
     </main>
+
 </div>
 </body>
 </html>

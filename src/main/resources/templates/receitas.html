@@ -336,7 +336,11 @@
 
             <a th:href="@{/categorias}">📁 Categorias</a>
 
-            <a th:href="@{/logout}">🚪 Sair</a>
+            <form th:action="@{/logout}" method="post">
+            <button type="submit" class="botao-sair">
+                 🚪 Sair
+        </button>
+</form>
         </nav>
 
     </aside>
@@ -438,11 +442,16 @@
                                         ✏️ Editar
                                     </a>
 
-                                    <a class="excluir"
-                                       th:href="@{/receitas/excluir/{id}(id=${r.id})}"
-                                       onclick="return confirm('Tem certeza que deseja excluir esta receita?');">
-                                        🗑️ Excluir
-                                    </a>
+                                    <form th:action="@{/receitas/excluir/{id}(id=${r.id})}"
+                                         method="post"
+                                         style="margin: 0;"
+                                        onsubmit="return confirm('Tem certeza que deseja excluir esta receita?');">
+
+                                  <button type="submit" class="excluir">
+                                            🗑️ Excluir
+                                </button>
+
+</form>
 
                                 </div>
                             </td>

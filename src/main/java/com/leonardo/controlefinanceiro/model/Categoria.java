@@ -1,9 +1,6 @@
 package com.leonardo.controlefinanceiro.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Categoria {
@@ -16,6 +13,11 @@ public class Categoria {
     // Nome da categoria e seu tipo, como receita ou despesa.
     private String nome;
     private String tipo;
+
+    // Identifica o usuário proprietário da categoria.
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
     public Categoria() {
     }
@@ -42,5 +44,15 @@ public class Categoria {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    // Retorna o usuário proprietário da categoria.
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    // Define o usuário proprietário da categoria.
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

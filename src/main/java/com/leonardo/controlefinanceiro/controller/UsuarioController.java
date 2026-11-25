@@ -9,11 +9,13 @@ import com.leonardo.controlefinanceiro.repository.DespesaRepository;
 import com.leonardo.controlefinanceiro.service.CotacaoService;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Controller
 public class UsuarioController {
@@ -32,69 +34,97 @@ public class UsuarioController {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    // Responsável pela proteção das senhas.
+    private final BCryptPasswordEncoder passwordEncoder =
+            new BCryptPasswordEncoder();
+
+    // ABRIR TELA DE CADASTRO
     @GetMapping("/cadastro")
     public String telaCadastro() {
         return "cadastro";
     }
 
-    // Impede o cadastro de dois usuários com o mesmo e-mail.
+    // CADASTRAR NOVO USUÁRIO
     @PostMapping("/cadastro")
     public String cadastrarUsuario(
             @ModelAttribute Usuario usuario,
             Model model) {
 
+        // Verifica se o e-mail já está cadastrado.
         if (usuarioRepository.findByEmail(
                 usuario.getEmail()).isPresent()) {
 
             model.addAttribute(
-                "erro", "Este e-mail já está cadastrado."
-            );
+                    "erro", "Este e-mail já está cadastrado.");
+
             return "cadastro";
         }
 
-        usuarioRepository.save(usuario);
+        // Cria um novo usuário sem aceitar um ID externo.
+        Usuario novo = new Usuario();
+
+        novo.setNome(usuario.getNome());
+        novo.setEmail(usuario.getEmail());
+
+        // Gera o hash da senha antes de salvar no banco.
+        novo.setSenha(
+                passwordEncoder.encode(usuario.getSenha()));
+
+        usuarioRepository.save(novo);
+
         return "redirect:/login";
     }
 
+    // ABRIR TELA DE LOGIN
     @GetMapping("/login")
     public String telaLogin() {
         return "login";
     }
 
-    // Valida as credenciais e cria a sessão do usuário autenticado.
+    // VALIDAR LOGIN
     @PostMapping("/login")
     public String fazerLogin(
             @RequestParam String email,
             @RequestParam String senha,
             HttpSession session,
+            HttpServletRequest request,
             Model model) {
 
         Usuario usuario = usuarioRepository
                 .findByEmail(email)
                 .orElse(null);
 
+        // Compara a senha informada com o hash armazenado.
         if (usuario != null &&
-                usuario.getSenha().equals(senha)) {
+                passwordEncoder.matches(
+                        senha, usuario.getSenha())) {
 
-            session.setAttribute(
-                "usuarioId", usuario.getId()
-            );
+            // Encerra a sessão anterior e cria uma nova.
+            // Isso também descarta o token CSRF anterior.
+            session.invalidate();
+
+            HttpSession novaSessao = request.getSession(true);
+
+            // Armazena o identificador do usuário autenticado.
+            novaSessao.setAttribute(
+                    "usuarioId", usuario.getId());
 
             return "redirect:/inicio";
         }
 
         model.addAttribute(
-            "erro", "E-mail ou senha inválidos."
-        );
+                "erro", "E-mail ou senha inválidos.");
+
         return "login";
     }
 
-    // Página inicial protegida: exige que exista um usuário autenticado na sessão.
+    // PÁGINA INICIAL DO USUÁRIO
     @GetMapping("/inicio")
     public String inicio(HttpSession session, Model model) {
 
         Object usuarioId = session.getAttribute("usuarioId");
 
+        // Impede o acesso sem autenticação.
         if (!(usuarioId instanceof Long)) {
             return "redirect:/login";
         }
@@ -108,13 +138,17 @@ public class UsuarioController {
             return "redirect:/login";
         }
 
-        // Calcula o resumo financeiro usado no painel inicial.
+        // Calcula somente as receitas do usuário conectado.
         Double totalReceitas =
-                receitaRepository.calcularTotalReceitas();
+                receitaRepository.calcularTotalReceitas(
+                        usuario.getId());
 
+        // Calcula somente as despesas do usuário conectado.
         Double totalDespesas =
-                despesaRepository.calcularTotalDespesas();
+                despesaRepository.calcularTotalDespesas(
+                        usuario.getId());
 
+        // Evita valores nulos nos cálculos financeiros.
         if (totalReceitas == null) {
             totalReceitas = 0.0;
         }
@@ -123,15 +157,18 @@ public class UsuarioController {
             totalDespesas = 0.0;
         }
 
+        // Calcula o saldo individual.
         Double saldo = totalReceitas - totalDespesas;
 
+        // Envia as informações para o dashboard.
         model.addAttribute("usuario", usuario);
         model.addAttribute("totalReceitas", totalReceitas);
         model.addAttribute("totalDespesas", totalDespesas);
         model.addAttribute("saldo", saldo);
 
-        // Integração com a AwesomeAPI
+        // Integração com a AwesomeAPI.
         try {
+
             String resposta = cotacaoService.buscarCotacoes();
 
             JsonNode json = objectMapper.readTree(resposta);
@@ -147,7 +184,7 @@ public class UsuarioController {
 
         } catch (Exception e) {
 
-            // Mantém a tela funcionando se a API falhar
+            // Mantém a tela funcionando se a API falhar.
             model.addAttribute("dolar", "Indisponível");
             model.addAttribute("euro", "Indisponível");
         }
@@ -155,9 +192,13 @@ public class UsuarioController {
         return "inicio";
     }
 
-    @GetMapping("/logout")
+    // ENCERRAR SESSÃO UTILIZANDO POST
+    @PostMapping("/logout")
     public String logout(HttpSession session) {
+
+        // Encerra a sessão e remove os dados de autenticação.
         session.invalidate();
+
         return "redirect:/login";
     }
 }

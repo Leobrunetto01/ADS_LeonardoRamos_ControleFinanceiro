@@ -67,6 +67,28 @@
             color: #35d399;
         }
 
+        /* Botão de saída protegido por POST. */
+        .botao-sair {
+            display: block;
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #c9d5e3;
+            padding: 15px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .botao-sair:hover {
+            background: var(--azul-claro);
+            color: #35d399;
+        }
+
         .conteudo {
             flex: 1;
             min-width: 0;
@@ -212,6 +234,9 @@
         .excluir {
             background: #ffebed;
             color: #d94853;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
         }
 
         .vazio {
@@ -232,6 +257,7 @@
             }
 
             .sidebar a { margin: 0; }
+            .botao-sair { margin: 0; }
             .menu-titulo { display: none; }
             .conteudo { padding: 20px; }
             .painel { padding: 20px; }
@@ -245,29 +271,46 @@
 <body>
 <div class="layout">
 
+    <!-- MENU LATERAL -->
     <aside class="sidebar">
+
         <div class="logo">💰 Financeiro</div>
         <div class="menu-titulo">Menu principal</div>
 
         <nav>
+
             <a th:href="@{/inicio}">🏠 Início</a>
+
             <a th:href="@{/receitas}">💵 Receitas</a>
+
             <a th:href="@{/despesas}">💸 Despesas</a>
+
             <a th:href="@{/categorias}" class="ativo">
                 📁 Categorias
             </a>
-            <a th:href="@{/logout}">🚪 Sair</a>
+
+            <!-- Encerra a sessão utilizando POST. -->
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="botao-sair">
+                    🚪 Sair
+                </button>
+            </form>
+
         </nav>
+
     </aside>
 
     <main class="conteudo">
 
+        <!-- CABEÇALHO -->
         <header class="topo">
             <h1>📁 Gerenciar Categorias</h1>
             <p>Organize suas receitas e despesas por categoria.</p>
         </header>
 
+        <!-- FORMULÁRIO DE CADASTRO -->
         <section class="painel">
+
             <h2>Nova Categoria</h2>
             <p>Preencha os campos para adicionar uma categoria.</p>
 
@@ -277,39 +320,55 @@
                   class="formulario">
 
                 <div class="campo">
+
                     <label for="nome">Nome da Categoria</label>
+
                     <input type="text"
                            id="nome"
                            th:field="*{nome}"
                            placeholder="Ex.: Alimentação, Salário"
                            required>
+
                 </div>
 
                 <div class="campo">
+
                     <label for="tipo">Tipo</label>
+
                     <select id="tipo"
                             th:field="*{tipo}"
                             required>
+
                         <option value="">Selecione o tipo</option>
                         <option value="RECEITA">Receita</option>
                         <option value="DESPESA">Despesa</option>
+
                     </select>
+
                 </div>
 
                 <div class="form-acoes">
+
                     <button type="submit" class="botao">
                         + Cadastrar Categoria
                     </button>
+
                 </div>
+
             </form>
+
         </section>
 
+        <!-- LISTAGEM DAS CATEGORIAS -->
         <section class="painel">
+
             <h2>Categorias Cadastradas</h2>
             <p>Consulte, edite ou exclua suas categorias.</p>
 
             <div class="tabela-container">
+
                 <table>
+
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -320,39 +379,63 @@
                     </thead>
 
                     <tbody>
-                        <!-- Thymeleaf cria uma linha para cada categoria cadastrada. -->
+
+                        <!-- Lista somente as categorias do usuário. -->
                         <tr th:each="c : ${categorias}">
+
                             <td th:text="${c.id}"></td>
+
                             <td th:text="${c.nome}"></td>
+
                             <td th:text="${c.tipo}"></td>
 
                             <td>
+
                                 <div class="acoes">
+
+                                    <!-- Abre a tela de edição. -->
                                     <a class="editar"
                                        th:href="@{/categorias/editar/{id}(id=${c.id})}">
                                         ✏️ Editar
                                     </a>
 
-                                    <a class="excluir"
-                                       th:href="@{/categorias/excluir/{id}(id=${c.id})}"
-                                       onclick="return confirm('Tem certeza que deseja excluir esta categoria?');">
-                                        🗑️ Excluir
-                                    </a>
+                                    <!-- Exclui a categoria utilizando POST. -->
+                                    <form th:action="@{/categorias/excluir/{id}(id=${c.id})}"
+                                          method="post"
+                                          style="margin: 0;"
+                                          onsubmit="return confirm('Tem certeza que deseja excluir esta categoria?');">
+
+                                        <button type="submit" class="excluir">
+                                            🗑️ Excluir
+                                        </button>
+
+                                    </form>
+
                                 </div>
+
                             </td>
+
                         </tr>
 
+                        <!-- Mensagem quando não existem categorias. -->
                         <tr th:if="${#lists.isEmpty(categorias)}">
+
                             <td colspan="4" class="vazio">
                                 Nenhuma categoria cadastrada até o momento.
                             </td>
+
                         </tr>
+
                     </tbody>
+
                 </table>
+
             </div>
+
         </section>
 
     </main>
+
 </div>
 </body>
 </html>

@@ -17,6 +17,11 @@ public class Despesa {
     private Double valor;
     private LocalDate data;
 
+    // Identifica o usuário proprietário da despesa.
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
     public Despesa() {
     }
 
@@ -50,5 +55,15 @@ public class Despesa {
 
     public void setData(LocalDate data) {
         this.data = data;
+    }
+
+    // Retorna o usuário proprietário da despesa.
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    // Define o usuário proprietário da despesa.
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }
